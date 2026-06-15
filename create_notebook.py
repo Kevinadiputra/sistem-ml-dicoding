@@ -1,0 +1,377 @@
+import json
+
+notebook_content = {
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Eksperimen Heart Disease Classification\n",
+    "Notebook ini dibuat untuk memenuhi **Kriteria 1 - Experimentation** pada Submission Akhir kelas **Membangun Sistem Machine Learning** di Dicoding.\n",
+    "\n",
+    "### Tahapan Eksperimen:\n",
+    "1. **Data Loading**: Membaca dataset, cek shape, dan tipe data.\n",
+    "2. **EDA**: Analisis missing values, duplikasi, outlier, distribusi, korelasi, dan analisis target.\n",
+    "3. **Data Preprocessing**: Handling missing values, duplikasi, encoding, feature engineering, scaling, dan train-test split.\n",
+    "4. **Menyimpan Dataset**: Menyimpan dataset preprocessed ke folder `dataset_preprocessed/`."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## 1. Data Loading"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": None,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "import numpy as np\n",
+    "import matplotlib.pyplot as plt\n",
+    "import seaborn as sns\n",
+    "import os\n",
+    "\n",
+    "# Set style untuk visualisasi\n",
+    "sns.set_theme(style=\"whitegrid\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": None,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Load dataset\n",
+    "data_path = \"dataset/heart_disease.csv\"\n",
+    "df = pd.read_csv(data_path)\n",
+    "\n",
+    "# Cek shape dataset\n",
+    "print(f\"Shape dataset: {df.shape[0]} baris, {df.shape[1]} kolom\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": None,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Cek tipe data setiap kolom\n",
+    "print(\"Tipe data setiap kolom:\")\n",
+    "print(df.dtypes)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": None,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Tampilkan 5 baris pertama\n",
+    "df.head()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## 2. Exploratory Data Analysis (EDA)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### A. Missing Values"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": None,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Cek missing values\n",
+    "print(\"Jumlah missing values per kolom:\")\n",
+    "print(df.isnull().sum())"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### B. Duplicate Values"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": None,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Cek duplicate values\n",
+    "duplicates_count = df.duplicated().sum()\n",
+    "print(f\"Jumlah baris duplikat: {duplicates_count}\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### C. Outlier Analysis"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": None,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Analisis Outlier menggunakan Boxplot untuk variabel numerik kontinu\n",
+    "continuous_cols = ['age', 'trestbps', 'chol', 'thalach', 'oldpeak']\n",
+    "\n",
+    "plt.figure(figsize=(14, 8))\n",
+    "for i, col in enumerate(continuous_cols, 1):\n",
+    "    plt.subplot(2, 3, i)\n",
+    "    sns.boxplot(y=df[col])\n",
+    "    plt.title(f'Boxplot of {col}')\n",
+    "plt.tight_layout()\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### D. Distribution Analysis"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": None,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Distribusi variabel numerik\n",
+    "plt.figure(figsize=(14, 8))\n",
+    "for i, col in enumerate(continuous_cols, 1):\n",
+    "    plt.subplot(2, 3, i)\n",
+    "    sns.histplot(df[col], kde=True, bins=20)\n",
+    "    plt.title(f'Distribution of {col}')\n",
+    "plt.tight_layout()\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### E. Correlation Analysis"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": None,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Analisis Korelasi antar fitur\n",
+    "plt.figure(figsize=(12, 10))\n",
+    "sns.heatmap(df.corr(), annot=True, cmap='coolwarm', fmt='.2f', linewidths=0.5)\n",
+    "plt.title('Correlation Matrix of Features')\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### F. Target Analysis"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": None,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Distribusi target\n",
+    "plt.figure(figsize=(6, 4))\n",
+    "sns.countplot(x='target', data=df)\n",
+    "plt.title('Target Column Distribution (0 = Normal, 1 = Heart Disease)')\n",
+    "plt.show()\n",
+    "\n",
+    "print(\"Frekuensi Target:\")\n",
+    "print(df['target'].value_counts())\n",
+    "print(\"\\nPersentase Target:\")\n",
+    "print(df['target'].value_counts(normalize=True) * 100)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## 3. Data Preprocessing"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": None,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Handling Duplicates\n",
+    "df_clean = df.drop_duplicates().reset_index(drop=True)\n",
+    "print(f\"Shape setelah membuang duplikat: {df_clean.shape}\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": None,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Handling Missing Values (Imputasi menggunakan median)\n",
+    "for col in ['chol', 'trestbps']:\n",
+    "    median_val = df_clean[col].median()\n",
+    "    df_clean[col] = df_clean[col].fillna(median_val)\n",
+    "\n",
+    "print(\"Missing values setelah imputasi:\")\n",
+    "print(df_clean.isnull().sum())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": None,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Feature Engineering\n",
+    "df_feat = df_clean.copy()\n",
+    "\n",
+    "# 1. Risk Ratio: cholesterol / resting blood pressure\n",
+    "df_feat['chol_bps_ratio'] = df_feat['chol'] / df_feat['trestbps']\n",
+    "\n",
+    "# 2. Age group categorical feature (discretization)\n",
+    "# 0: Young (<45), 1: Middle-aged (45-60), 2: Elderly (>60)\n",
+    "df_feat['age_group'] = pd.cut(df_feat['age'], bins=[0, 45, 60, np.inf], labels=[0, 1, 2]).astype(int)\n",
+    "\n",
+    "# 3. Heart rate / age ratio\n",
+    "df_feat['hr_age_ratio'] = df_feat['thalach'] / df_feat['age']\n",
+    "\n",
+    "df_feat.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": None,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Encoding Categorical Features & Scaling\n",
+    "X = df_feat.drop(columns=['target'])\n",
+    "y = df_feat['target']\n",
+    "\n",
+    "# Identifikasi kolom multi-category untuk One-Hot Encoding\n",
+    "multi_cat_cols = ['cp', 'restecg', 'slope', 'thal', 'age_group']\n",
+    "numeric_cols = ['age', 'trestbps', 'chol', 'thalach', 'oldpeak', 'chol_bps_ratio', 'hr_age_ratio']\n",
+    "\n",
+    "# One-Hot Encoding\n",
+    "X_encoded = pd.get_dummies(X, columns=multi_cat_cols, drop_first=True)\n",
+    "dummy_cols = [col for col in X_encoded.columns if any(mc in col for mc in multi_cat_cols)]\n",
+    "X_encoded[dummy_cols] = X_encoded[dummy_cols].astype(int)\n",
+    "\n",
+    "X_encoded.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": None,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Train Test Split (80% Train, 20% Test)\n",
+    "from sklearn.model_selection import train_test_split\n",
+    "from sklearn.preprocessing import StandardScaler\n",
+    "\n",
+    "X_train, X_test, y_train, y_test = train_test_split(\n",
+    "    X_encoded, y, test_size=0.2, random_state=42, stratify=y\n",
+    ")\n",
+    "\n",
+    "# Scaling numeric features\n",
+    "scaler = StandardScaler()\n",
+    "X_train_scaled = X_train.copy()\n",
+    "X_train_scaled[numeric_cols] = scaler.fit_transform(X_train[numeric_cols])\n",
+    "\n",
+    "X_test_scaled = X_test.copy()\n",
+    "X_test_scaled[numeric_cols] = scaler.transform(X_test[numeric_cols])\n",
+    "\n",
+    "# Gabungkan kembali fitur dan target untuk disimpan\n",
+    "train_preprocessed = X_train_scaled.copy()\n",
+    "train_preprocessed['target'] = y_train\n",
+    "\n",
+    "test_preprocessed = X_test_scaled.copy()\n",
+    "test_preprocessed['target'] = y_test\n",
+    "\n",
+    "print(f\"Train shape: {train_preprocessed.shape}\")\n",
+    "print(f\"Test shape: {test_preprocessed.shape}\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## 4. Simpan Dataset Hasil Preprocessing"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": None,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Menyimpan dataset hasil preprocessing ke folder dataset_preprocessed/\n",
+    "output_dir = \"dataset_preprocessed\"\n",
+    "os.makedirs(output_dir, exist_ok=True)\n",
+    "\n",
+    "train_path = os.path.join(output_dir, \"train.csv\")\n",
+    "test_path = os.path.join(output_dir, \"test.csv\")\n",
+    "\n",
+    "train_preprocessed.to_csv(train_path, index=False)\n",
+    "test_preprocessed.to_csv(test_path, index=False)\n",
+    "\n",
+    "print(f\"Preprocessed train dataset saved successfully to {train_path}\")\n",
+    "print(f\"Preprocessed test dataset saved successfully to {test_path}\")"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbformat": 4,
+   "nbformat_minor": 2,
+   "pygments_lexer": "ipython3",
+   "version": "3.10.0"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
+
+with open("Eksperimen_HeartDisease.ipynb", "w") as f:
+    json.dump(notebook_content, f, indent=1)
+print("Eksperimen_HeartDisease.ipynb generated successfully!")
