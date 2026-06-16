@@ -23,18 +23,26 @@ def main():
         return
         
     # Step 2: Run Preprocessing
-    if not run_step(f'"{python_exe}" automate_HeartDisease.py', "Run Preprocessing Script"):
+    if not run_step(f'"{python_exe}" preprocessing/automate_Kevinadiputra.py', "Run Preprocessing Script"):
         return
         
     # Step 3: Copy preprocessed data to Workflow-CI
     print("\n=== Copying Preprocessed Data to Workflow-CI ===")
-    src_path = os.path.join("dataset_preprocessed", "train.csv")
+    src_path = os.path.join("preprocessing", "dataset_preprocessed", "train.csv")
     dest_dir = os.path.join("Workflow-CI", "dataset")
     dest_path = os.path.join(dest_dir, "heart_disease_preprocessed.csv")
     
     os.makedirs(dest_dir, exist_ok=True)
     shutil.copy(src_path, dest_path)
     print(f"Copied {src_path} to {dest_path}")
+    
+    # Also update Membangun_model copies
+    print("\n=== Updating Membangun_model Dataset Copies ===")
+    dest_dir_model = os.path.join("Membangun_model", "dataset_preprocessed")
+    os.makedirs(dest_dir_model, exist_ok=True)
+    shutil.copy(src_path, os.path.join(dest_dir_model, "train.csv"))
+    shutil.copy(os.path.join("preprocessing", "dataset_preprocessed", "test.csv"), os.path.join(dest_dir_model, "test.csv"))
+    print("Membangun_model datasets updated successfully!")
     print("\nAll pipeline prep steps completed successfully!")
 
 if __name__ == "__main__":

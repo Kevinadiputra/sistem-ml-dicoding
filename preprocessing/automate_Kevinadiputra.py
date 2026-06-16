@@ -111,11 +111,19 @@ def save_dataset(train_df, test_df, output_dir="dataset_preprocessed"):
 
 def main():
     """Main execution function."""
-    df = load_data("dataset/heart_disease.csv")
+    raw_path = "dataset/heart_disease.csv"
+    out_dir = "preprocessing/dataset_preprocessed"
+    
+    # Path fallbacks to handle running from root vs inside preprocessing/ folder
+    if not os.path.exists("dataset") and os.path.exists("../dataset"):
+        raw_path = "../dataset/heart_disease.csv"
+        out_dir = "dataset_preprocessed"
+        
+    df = load_data(raw_path)
     df_clean = clean_data(df)
     df_feat = feature_engineering(df_clean)
     train_preprocessed, test_preprocessed = preprocess(df_feat, target_col='target')
-    save_dataset(train_preprocessed, test_preprocessed, "dataset_preprocessed")
+    save_dataset(train_preprocessed, test_preprocessed, out_dir)
     print("Preprocessing completed successfully!")
 
 if __name__ == "__main__":

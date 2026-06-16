@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - 'dataset/heart_disease.csv'
-      - 'automate_HeartDisease.py'
+      - 'preprocessing/automate_Kevinadiputra.py'
   workflow_dispatch: # Allows manual triggering from the GitHub Actions UI
 
 env:
@@ -38,12 +38,12 @@ jobs:
 
     - name: Run Preprocessing Script
       run: |
-        python automate_HeartDisease.py
+        python preprocessing/automate_Kevinadiputra.py
 
     - name: Commit and Push Changes
       run: |
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"
-        git add dataset_preprocessed/
+        git add preprocessing/dataset_preprocessed/
         git commit -m "chore: automated preprocessing update [skip ci]" || echo "No changes to commit"
         git push

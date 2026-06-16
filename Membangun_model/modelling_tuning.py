@@ -41,8 +41,19 @@ def train_tuning():
     train_path = "dataset_preprocessed/train.csv"
     test_path = "dataset_preprocessed/test.csv"
     
+    # Path fallbacks for running from root vs running from inside Membangun_model
     if not os.path.exists(train_path) or not os.path.exists(test_path):
-        raise FileNotFoundError("Preprocessed data not found. Please run preprocessing first.")
+        fallback_path = os.path.join("Membangun_model", train_path)
+        if os.path.exists(fallback_path):
+            train_path = fallback_path
+            test_path = os.path.join("Membangun_model", test_path)
+        else:
+            fallback_path2 = os.path.join("preprocessing", train_path)
+            if os.path.exists(fallback_path2):
+                train_path = fallback_path2
+                test_path = os.path.join("preprocessing", test_path)
+            else:
+                raise FileNotFoundError("Preprocessed data not found. Please run preprocessing first.")
         
     train_df = pd.read_csv(train_path)
     test_df = pd.read_csv(test_path)
