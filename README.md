@@ -138,4 +138,4 @@ Script ini akan memproses dataset mentah dan menghasilkan file `train.csv` serta
   python "Monitoring dan Logging/7.Inference.py"
   ```
 - **Mengaktifkan Prometheus dan Grafana**:
-  Panduan konfigurasi Prometheus, pembuatan dashboard di Grafana, serta aktivasi rules alerting dapat dilihat pada file [monitoring_setup_guide.md](./monitoring_setup_guide.md).
+  Jalankan server Prometheus lokal menggunakan berkas konfigurasi di `prometheus/prometheus.yml`, kemudian jalankan Grafana dan impor berkas konfigurasi dashboard `grafana_dashboard.json` untuk visualisasi metrik secara real-time.
