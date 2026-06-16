@@ -18,10 +18,8 @@ from sklearn.metrics import (
 )
 
 # --- DagsHub Integration ---
-# Replace 'Kevinadiputra' and 'sistem-ml-dicoding' with your DagsHub username and project name.
-# Or set DAGSHUB_USERNAME and DAGSHUB_REPO environment variables.
-repo_owner = os.getenv("DAGSHUB_USERNAME", "Kevinadiputra")
-repo_name = os.getenv("DAGSHUB_REPO", "sistem-ml-dicoding")
+repo_owner = os.getenv("DAGSHUB_USERNAME", "USERNAME")
+repo_name = os.getenv("DAGSHUB_REPO", "PROJECT")
 
 if repo_owner != "USERNAME" and repo_name != "PROJECT":
     try:
