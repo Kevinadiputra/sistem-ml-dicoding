@@ -1,65 +1,65 @@
-# Dicoding Submission Checklist & Screenshot Guide (Advanced 4/4)
+# Panduan Evaluasi Mandiri dan Screenshot Penyerahan Berkas
 
-Dokumen ini berisi panduan screenshot wajib untuk dilampirkan dalam README proyek Anda dan checklist evaluasi agar mendapatkan nilai **Advanced (4/4)** dari reviewer.
+Dokumen ini memuat daftar kebutuhan screenshot wajib untuk dilampirkan dalam dokumentasi proyek serta checklist evaluasi kelayakan sistem sesuai standar kriteria tugas akhir.
 
 ---
 
-## 1. Daftar Screenshot Wajib untuk Reviewer
+## 1. Daftar Screenshot Wajib
 
-Karena reviewer tidak selalu bisa menjalankan Docker container atau Prometheus secara langsung di environment mereka, **melampirkan screenshot berikut sangat krusial** untuk mempermudah reviewer memverifikasi sistem Anda:
+Dokumentasi visual berikut diperlukan untuk memverifikasi fungsionalitas sistem yang tidak dapat diuji secara langsung oleh penilai:
 
 ### Kriteria 1: Preprocessing & GitHub Actions
-1. **GitHub Actions Preprocessing Run**: Screenshot halaman run workflow GitHub Actions yang menunjukkan workflow `preprocessing.yml` sukses dijalankan pada event push.
-2. **Git Commit History**: Screenshot history commit di repository GitHub yang membuktikan bot github-actions berhasil menambahkan/meng-update file `dataset_preprocessed/train.csv` dan `test.csv`.
+1. **GitHub Actions Preprocessing Run**: Screenshot halaman eksekusi workflow GitHub Actions yang menunjukkan file workflow `preprocessing.yml` berhasil berjalan saat terjadi event push.
+2. **Git Commit History**: Screenshot riwayat commit pada repositori GitHub yang membuktikan bot github-actions berhasil menambahkan atau memperbarui file data latih `train.csv` dan data uji `test.csv` di direktori `dataset_preprocessed/`.
 
 ### Kriteria 2: Model Experimentation & DagsHub MLflow
-3. **MLflow Local Dashboard**: Screenshot dashboard MLflow local (`mlflow ui`) setelah menjalankan `modelling.py` dengan autologging, menunjukkan parameters, metrics, dan model logged.
-4. **DagsHub MLflow Experiments**: Screenshot dashboard MLflow di platform DagsHub Anda setelah menjalankan `modelling_tuning.py`, yang menunjukkan parameters hasil tuning GridSearchCV, metrics, dan list artifacts (`confusion_matrix.png`, `feature_importance.png`, `learning_curve.png`, dll.) tersimpan di remote registry.
+3. **MLflow Local Dashboard**: Screenshot halaman dashboard MLflow lokal (`mlflow ui`) setelah pengeksekusian script `modelling.py` dengan fitur autologging aktif.
+4. **DagsHub MLflow Experiments**: Screenshot dashboard MLflow pada platform DagsHub setelah pengeksekusian script `modelling_tuning.py` yang menampilkan parameter hasil pencarian GridSearchCV, metrik performa, dan daftar artefak visualisasi (Confusion Matrix, Feature Importance, Learning Curve) di server registri DagsHub.
 
-### Kriteria 3: Workflow CI (Second Repository)
-5. **GitHub Actions Workflow CI Run**: Halaman run workflow `ci-training.yml` di repository kedua (`Workflow-CI`) sukses dari tahap checkout sampai build & push Docker image.
-6. **Docker Hub Image Repository**: Halaman Docker Hub account Anda yang menampilkan image model serving baru saja di-push dengan tag `:latest`.
+### Kriteria 3: Workflow CI (Repositori Kedua)
+5. **GitHub Actions Workflow CI Run**: Screenshot halaman eksekusi workflow `ci-training.yml` pada repositori kedua (`Workflow-CI`) yang berhasil berjalan dari langkah checkout hingga kompilasi dan pengunggahan Docker image.
+6. **Docker Hub Image Repository**: Halaman akun Docker Hub yang menampilkan image model serving berhasil diunggah dengan tag `:latest`.
 
 ### Kriteria 4: Monitoring & Alerting
 7. **FastAPI inference API & /metrics**:
-   * API Docs Swagger (`http://localhost:8000/docs`) menunjukkan endpoint `/predict` dan `/metrics`.
-   * Screenshot browser saat membuka endpoint `/metrics` yang menampilkan value dari 10 metrics Prometheus.
-8. **Prometheus Targets Active**: Halaman **Status -> Targets** di Prometheus (`http://localhost:9090`) menunjukkan status target endpoint model serving dalam keadaan **UP**.
-9. **Grafana Dashboard**: Dashboard Grafana yang dinamai dengan **Username Dicoding Anda** menampilkan visualisasi dari 10 metrics secara live setelah Anda melakukan request menggunakan `inference.py`.
-10. **Grafana Alerting Rules**: Halaman **Alerting -> Alert rules** di Grafana yang menampilkan status rule alert (High Latency, High CPU, Error Rate) aktif.
+   - Dokumentasi antarmuka Swagger FastAPI (`http://localhost:8000/docs`) yang memuat endpoint `/predict` dan `/metrics`.
+   - Tampilan respon browser pada endpoint `/metrics` yang menyajikan deretan nilai metrik Prometheus.
+8. **Prometheus Targets Active**: Halaman **Status -> Targets** pada server Prometheus (`http://localhost:9090`) yang menampilkan status target endpoint model serving dalam keadaan **UP**.
+9. **Grafana Dashboard**: Dashboard Grafana yang dinamai dengan identitas Anda, memvisualisasikan nilai metrik secara live setelah pengujian inferensi.
+10. **Grafana Alerting Rules**: Halaman **Alerting -> Alert rules** pada Grafana yang menampilkan status aturan peringatan (High Latency, High CPU, Error Rate) dalam kondisi aktif.
 
 ---
 
-## 2. Checklist Detail Penilaian Advanced (4/4)
+## 2. Checklist Evaluasi Kelayakan Sistem
 
-Pastikan semua poin di bawah ini tercentang sebelum Anda mengunggah berkas zip submission:
+Berikut poin-poin verifikasi sistem sebelum berkas proyek diserahkan:
 
-### Kriteria 1: Experimentation (Advanced)
-* [ ] **Notebook Eksperimen**: File `Eksperimen_HeartDisease.ipynb` ada di root project.
-* [ ] **Eksperimen Lengkap**: Notebook berisi loading data, EDA lengkap (missing values, duplicates, outliers, distribution, correlation, target), preprocessing (handling missing/duplicates, feature engineering, encoding, scaling, train-test split).
-* [ ] **Output Preprocessed**: Data hasil preprocessing disimpan ke dalam folder `dataset_preprocessed/`.
-* [ ] **Script Otomatisasi**: File `automate_HeartDisease.py` memiliki fungsi: `load_data()`, `clean_data()`, `feature_engineering()`, `preprocess()`, `save_dataset()`, dan `main()`.
-* [ ] **Preprocessing CI**: File `.github/workflows/preprocessing.yml` terkonfigurasi dengan benar untuk mendeteksi push, menjalankan python preprocessing, dan meng-commit hasilnya secara otomatis.
+### Kriteria 1: Eksperimen Data
+- [ ] Berkas notebook eksperimen `Eksperimen_Kevinadiputra.ipynb` berada di direktori `preprocessing/`.
+- [ ] Notebook memuat tahap pemuatan data, analisis deskriptif lengkap (nilai kosong, duplikasi, pencilan, sebaran data, hubungan korelasi, variabel target), serta pra-pemrosesan data (penanganan nilai kosong/duplikat, rekayasa fitur, encoding, penskalaan, dan pembagian data).
+- [ ] File hasil pra-pemrosesan data tersimpan di folder `dataset_preprocessed/`.
+- [ ] Script otomatisasi `automate_Kevinadiputra.py` memuat fungsi utama: `load_data()`, `clean_data()`, `feature_engineering()`, `preprocess()`, `save_dataset()`, dan `main()`.
+- [ ] File alur kerja GitHub Actions `.github/workflows/preprocessing.yml` terkonfigurasi dengan benar untuk mendeteksi event push, memicu script otomatisasi pra-pemrosesan, dan melakukan commit hasil pemrosesan secara otomatis.
 
-### Kriteria 2: Model Building (Advanced)
-* [ ] **Membangun Model**: Terdapat folder `Membangun_model/` berisi `modelling.py` and `modelling_tuning.py`.
-* [ ] **Automatic Logging**: Script `modelling.py` menggunakan `mlflow.autolog()` untuk merekam metrics dan models secara otomatis.
-* [ ] **Hyperparameter Tuning**: Script `modelling_tuning.py` menggunakan `GridSearchCV` atau `RandomizedSearchCV` tanpa autolog (menggunakan manual logging).
-* [ ] **Manual Logs**: Menyimpan parameter tuning, metrics (accuracy, precision, recall, f1), dan minimal 5 artifacts (`confusion_matrix.png`, `feature_importance.png`, `classification_report.txt`, `learning_curve.png`, `prediction_distribution.png`).
-* [ ] **Remote Tracking (DagsHub)**: Terintegrasi dengan `dagshub.init()` untuk mengarahkan tracking MLflow ke dashboard DagsHub Anda.
-* [ ] **Dependencies**: File `requirements.txt` ter-generate lengkap dan diletakkan di root project.
+### Kriteria 2: Pembuatan Model
+- [ ] Folder `Membangun_model/` memuat berkas `modelling.py` dan `modelling_tuning.py`.
+- [ ] Script `modelling.py` menerapkan fitur `mlflow.autolog()` untuk mencatat metrik dan parameter model secara otomatis.
+- [ ] Script `modelling_tuning.py` menerapkan optimasi hyperparameter menggunakan `GridSearchCV` dengan pencatatan metrik secara manual (manual logging).
+- [ ] Pencatatan manual menyimpan parameter model terbaik, metrik performa (Accuracy, Precision, Recall, F1-Score), serta minimal 5 artefak visualisasi evaluasi model.
+- [ ] Integrasi DagsHub MLflow menggunakan library `dagshub` terkonfigurasi untuk mengunggah pelacakan eksperimen pemodelan secara jarak jauh (remote registry).
+- [ ] File daftar pustaka dependensi `requirements.txt` diletakkan di root project.
 
-### Kriteria 3: Workflow CI (Advanced)
-* [ ] **Repositori CI**: File project diletakkan di folder/repositori kedua `Workflow-CI` yang terpisah.
-* [ ] **MLProject File**: File `MLproject` mendefinisikan environment `conda.yaml` dan perintah running `python modelling.py`.
-* [ ] **Conda Environment**: File `conda.yaml` mendefinisikan dependencies Python dan CLI library yang dibutuhkan untuk project.
-* [ ] **Workflow CI-Training**: File `.github/workflows/ci-training.yml` memproses checkout, install dependencies, run MLflow project, compress/upload artifacts, login Docker Hub, serta build dan push Docker image ke Docker Hub.
-* [ ] **Dockerfile**: Terdapat `Dockerfile` di folder `Workflow-CI` untuk model serving.
+### Kriteria 3: Alur Integrasi Berkelanjutan (CI)
+- [ ] Berkas alur kerja dipisahkan ke repositori kedua bernama `Workflow-CI`.
+- [ ] File `MLproject` mendefinisikan environment `conda.yaml` dan perintah pengeksekusian script training model.
+- [ ] File `conda.yaml` memuat daftar dependensi pustaka Python yang dibutuhkan dalam training model.
+- [ ] File workflow `.github/workflows/ci-training.yml` memuat urutan langkah penyiapan conda environment, pengeksekusian MLflow project, pengarsipan artefak hasil run, otentikasi akun Docker Hub, serta pembangunan dan pengunggahan Docker image ke Docker Hub.
+- [ ] File instruksi build `Dockerfile` tersedia di direktori `Workflow-CI`.
 
-### Kriteria 4: Monitoring (Advanced)
-* [ ] **FastAPI Serving & Metrics**: File `prometheus_exporter.py` menggabungkan FastAPI model serving dan pengeksporan metrics dalam 1 script.
-* [ ] **Inference Client**: File `inference.py` dapat mengirimkan JSON request ke model dan mencetak respon output.
-* [ ] **Minimal 10 Metrics**: Pengeksporan metrics mencakup minimal 10 metric wajib (prediction count, latency, request count, error count, cpu, memory, disk, accuracy, throughput, response time).
-* [ ] **Prometheus Config**: File `prometheus/prometheus.yml` terkonfigurasi untuk men-scrape metrics dari target server.
-* [ ] **Grafana Dashboard JSON**: File `grafana_dashboard.json` ada di root project, siap di-import, dan menampilkan visualisasi kesepuluh metric.
-* [ ] **Alerting Rules**: Menyetel 3 rule alert di Grafana (High Latency > 2s, High CPU > 80%, Error Rate > 5%) dengan petunjuk setup lengkap di dokumentasi.
+### Kriteria 4: Pemantauan & Deployment
+- [ ] Berkas `prometheus_exporter.py` menggabungkan model serving (FastAPI) dan pengeksporan metrik ke dalam satu script.
+- [ ] Berkas client `inference.py` dikonfigurasi untuk mengirimkan payload data pengujian format JSON ke endpoint prediksi dan mencetak respon output.
+- [ ] Pengeksporan metrik menyediakan minimal 10 metrik sistem dan pemodelan yang relevan.
+- [ ] File konfigurasi Prometheus `prometheus/prometheus.yml` terkonfigurasi dengan target server penarikan metrik.
+- [ ] File konfigurasi dashboard `grafana_dashboard.json` tersedia di root project dan siap untuk diimpor ke aplikasi Grafana.
+- [ ] Pengaturan aturan peringatan (alert rules) pada Grafana mencakup 3 alert wajib (High Latency, High CPU, Error Rate) beserta petunjuk implementasi lengkap pada dokumentasi.
