@@ -34,24 +34,34 @@ Dataset yang digunakan dalam proyek ini adalah Cleveland Heart Disease dari UCI 
 ## Struktur Direktori
 
 ```text
+├── Eksperimen_SML_Kevinadiputra.txt        # Tautan ke repositori eksprimen & preprocessing
+├── Workflow-CI.txt                         # Tautan ke repositori CI/CD (Workflow-CI)
 ├── dataset/
 │   └── heart_disease.csv                  # Dataset mentah (Cleveland Heart Disease)
 ├── .github/
 │   └── workflows/
 │       └── preprocessing.yml              # Alur kerja otomatis pra-pemrosesan data
-├── Membangun_model/
-│   ├── dataset_preprocessed/              # Salinan data hasil pra-pemrosesan untuk pemodelan
+├── Eksperimen_SML_Kevinadiputra/          # Folder eksperimen Kriteria 1
+│   ├── .workflow/                         # Validasi alur kerja Dicoding
+│   ├── dataset/
+│   │   └── heart_disease.csv              # Dataset mentah
+│   └── preprocessing/
+│       ├── Eksperimen_Kevinadiputra.ipynb # Dokumentasi analisis & pra-pemrosesan data
+│       ├── automate_Kevinadiputra.py      # Script otomatisasi pra-pemrosesan data
+│       └── dataset_preprocessed/          # Data hasil preprocessing terbagi train/test
+│           ├── train.csv
+│           └── test.csv
+├── Membangun_model/                       # Folder pemodelan Kriteria 2
+│   ├── dataset_preprocessed/              # Salinan data pra-pemrosesan untuk pemodelan
 │   │   ├── train.csv
 │   │   └── test.csv
-│   ├── modelling.py                       # Script pelatihan model dengan MLflow autologging
-│   └── modelling_tuning.py                # Script hyperparameter tuning dengan DagsHub MLflow
-├── preprocessing/
-│   ├── dataset_preprocessed/              # Output dataset hasil pra-pemrosesan
-│   │   ├── train.csv
-│   │   └── test.csv
-│   ├── Eksperimen_Kevinadiputra.ipynb     # Dokumentasi eksperimen dan analisis data (Jupyter)
-│   └── automate_Kevinadiputra.py           # Script otomatisasi pra-pemrosesan data
-├── Workflow-CI/                           # Repositori terpisah untuk pipeline CI
+│   ├── modelling.py                       # Script pelatihan model dengan autologging
+│   ├── modelling_tuning.py                # Script hyperparameter tuning dengan remote registry
+│   ├── screenshoot_dashboard.jpg          # Bukti screenshot local MLflow dashboard
+│   ├── screenshoot_artifak.jpg            # Bukti screenshot remote DagsHub experiments
+│   ├── requirements.txt                   # Dependensi pemodelan
+│   └── DagsHub.txt                        # Tautan registri remote DagsHub MLflow
+├── Workflow-CI/                           # Repositori terpisah untuk pipeline CI (Kriteria 3)
 │   ├── .github/workflows/
 │   │   └── ci-training.yml                # Alur kerja CI training dan build/push Docker
 │   ├── dataset/
@@ -62,10 +72,18 @@ Dataset yang digunakan dalam proyek ini adalah Cleveland Heart Disease dari UCI 
 │   ├── Dockerfile                         # Spesifikasi kontainer Docker untuk deployment
 │   ├── requirements.txt                   # Dependensi instalasi kontainer
 │   └── prometheus_exporter.py             # Script model serving dengan metrics exporter
+├── Monitoring dan Logging/                 # Folder monitoring Kriteria 4
+│   ├── 1.bukti_serving.png                # Screenshot model serving berjalan
+│   ├── 2.prometheus.yml                   # Konfigurasi pengumpulan metrik Prometheus
+│   ├── 3.prometheus_exporter.py           # Script model serving FastAPI & exporter
+│   ├── 4.bukti monitoring Prometheus/     # Folder screenshot targets & query metrik
+│   ├── 5.bukti monitoring Grafana/        # Folder screenshot dashboard Grafana
+│   ├── 6.bukti alerting Grafana/          # Folder screenshot notifikasi alert firing
+│   └── 7.Inference.py                     # Script simulasi pengujian client
 ├── prometheus/
 │   └── prometheus.yml                     # Konfigurasi pengumpulan metrik Prometheus
 ├── requirements.txt                       # Daftar dependensi utama proyek
-├── inference.py                           # Script simulasi pengiriman data ke server serving
+├── inference.py                           # Script simulasi pengujian root client
 ├── prometheus_exporter.py                 # Script model serving lokal FastAPI & Prometheus
 ├── grafana_dashboard.json                 # Konfigurasi dashboard visualisasi Grafana
 └── README.md                              # Dokumentasi proyek
@@ -116,6 +134,8 @@ Script ini akan memproses dataset mentah dan menghasilkan file `train.csv` serta
   Jalankan script berikut di terminal terpisah untuk mensimulasikan permintaan prediksi ke API server:
   ```bash
   python inference.py
+  # Atau menggunakan script client monitoring:
+  python "Monitoring dan Logging/7.Inference.py"
   ```
 - **Mengaktifkan Prometheus dan Grafana**:
   Panduan konfigurasi Prometheus, pembuatan dashboard di Grafana, serta aktivasi rules alerting dapat dilihat pada file [monitoring_setup_guide.md](./monitoring_setup_guide.md).
