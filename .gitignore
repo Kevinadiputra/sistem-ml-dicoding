@@ -16,3 +16,21 @@ mlruns.db
 
 # Exclude the second repository directory from the root git tracking
 Workflow-CI/
+
+# Personal study and development guides
+dicoding_reviewer_checklist.md
+monitoring_setup_guide.md
+catatan_reviewer.md
+
+# Development scripts
+create_dashboard.py
+create_notebook.py
+generate_data.py
+run_pipeline.py
+
+# Local databases and artifacts
+mlflow.db
+artifacts/
+
+# Local screenshots directory
+BUKTI SCREENSHOOT/
