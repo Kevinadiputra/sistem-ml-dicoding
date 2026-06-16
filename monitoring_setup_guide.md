@@ -111,10 +111,47 @@ Alert ini terpicu jika rasio kegagalan/error API melebihi 5% dari total requests
    ```
 4. Di bagian **Condition**, set evaluasi setiap `10s` selama `30s`.
 5. Set threshold condition: **IS ABOVE** `5` (merepresentasikan 5%).
+### Alert 4: High Memory Usage (> 85% Memory)
+Alert ini mendeteksi risiko Out-of-Memory (OOM) akibat memory leak pada server serving.
+1. Masuk ke **Alerting -> Alert rules -> Create rule**.
+2. Masukkan nama alert: `High Memory Alert`.
+3. Di bagian query, masukkan query berikut:
+   ```promql
+   memory_usage_percent
+   ```
+4. Di bagian **Condition**, set evaluasi setiap `10s` dengan durasi "For" selama `1m` (atau minimal sama dengan interval evaluasi group).
+5. Set threshold condition: **IS ABOVE** `85`.
+6. Pilih folder `MLOps Alerts` dan group `every-10s`.
+7. Klik **Save and exit**.
+
+### Alert 5: High Disk Space Usage (> 90% Disk)
+Alert ini terpicu jika penyimpanan media hosting container API hampir habis (di atas 90%).
+1. Masuk ke **Alerting -> Alert rules -> Create rule**.
+2. Masukkan nama alert: `High Disk Usage Alert`.
+3. Di bagian query, masukkan query berikut:
+   ```promql
+   disk_usage_percent
+   ```
+4. Di bagian **Condition**, set evaluasi setiap `10s` dengan durasi "For" selama `1m`.
+5. Set threshold condition: **IS ABOVE** `90`.
+6. Pilih folder `MLOps Alerts` dan group `every-10s`.
+7. Klik **Save and exit**.
+
+### Alert 6: API Error Spike (Absolute Errors > 5 in 1 Minute)
+Alert ini terpicu secara instan jika terdeteksi lebih dari 5 request gagal/error dalam kurun waktu 1 menit terakhir.
+1. Masuk ke **Alerting -> Alert rules -> Create rule**.
+2. Masukkan nama alert: `API Error Spike Alert`.
+3. Di bagian query, masukkan query berikut:
+   ```promql
+   increase(error_count_total[1m])
+   ```
+4. Di bagian **Condition**, set evaluasi setiap `10s` dengan durasi "For" selama `1m`.
+5. Set threshold condition: **IS ABOVE** `5`.
 6. Pilih folder `MLOps Alerts` dan group `every-10s`.
 7. Klik **Save and exit**.
 
 ---
+
 
 ## 5. Cara Pengujian Sistem (Simulation)
 
