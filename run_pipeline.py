@@ -29,12 +29,20 @@ def main():
     # Step 3: Copy preprocessed data to Workflow-CI
     print("\n=== Copying Preprocessed Data to Workflow-CI ===")
     src_path = os.path.join("preprocessing", "dataset_preprocessed", "train.csv")
-    dest_dir = os.path.join("Workflow-CI", "dataset")
-    dest_path = os.path.join(dest_dir, "heart_disease_preprocessed.csv")
     
+    # 3a. Target MLProject dataset path (tracked by git)
+    dest_dir = os.path.join("Workflow-CI", "MLProject", "dataset")
+    dest_path = os.path.join(dest_dir, "heart_disease_preprocessed.csv")
     os.makedirs(dest_dir, exist_ok=True)
     shutil.copy(src_path, dest_path)
     print(f"Copied {src_path} to {dest_path}")
+    
+    # 3b. Compatibility copy at Workflow-CI root dataset path
+    compat_dir = os.path.join("Workflow-CI", "dataset")
+    compat_path = os.path.join(compat_dir, "heart_disease_preprocessed.csv")
+    os.makedirs(compat_dir, exist_ok=True)
+    shutil.copy(src_path, compat_path)
+    print(f"Copied {src_path} to {compat_path}")
     
     # Also update Membangun_model copies
     print("\n=== Updating Membangun_model Dataset Copies ===")
