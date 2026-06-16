@@ -660,7 +660,7 @@ notebook = {
 }
 
 # Write to file
-output_path = os.path.join("preprocessing", "Eksperimen_Kevinadiputra.ipynb")
+output_path = os.path.join("Eksperimen_SML_Kevinadiputra", "preprocessing", "Eksperimen_Kevinadiputra.ipynb")
 with open(output_path, "w", encoding="utf-8") as f:
     json.dump(notebook, f, ensure_ascii=False, indent=1)
 

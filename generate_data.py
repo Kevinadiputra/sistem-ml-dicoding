@@ -54,10 +54,14 @@ def generate_heart_disease_dataset():
     duplicate_rows = df.iloc[0:3].copy()
     df = pd.concat([df, duplicate_rows], ignore_index=True)
 
-    # Ensure output directory exists
+    # Ensure output directories exist
+    os.makedirs('Eksperimen_SML_Kevinadiputra/dataset', exist_ok=True)
+    df.to_csv('Eksperimen_SML_Kevinadiputra/dataset/heart_disease.csv', index=False)
+    
     os.makedirs('dataset', exist_ok=True)
     df.to_csv('dataset/heart_disease.csv', index=False)
-    print(f"Generated heart_disease.csv with shape {df.shape} in dataset/")
+    
+    print(f"Generated heart_disease.csv with shape {df.shape} in both directories.")
 
 if __name__ == "__main__":
     generate_heart_disease_dataset()

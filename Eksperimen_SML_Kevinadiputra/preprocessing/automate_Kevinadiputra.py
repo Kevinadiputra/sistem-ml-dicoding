@@ -111,11 +111,11 @@ def save_dataset(train_df, test_df, output_dir="dataset_preprocessed"):
 
 def main():
     """Main execution function."""
-    raw_path = "dataset/heart_disease.csv"
-    out_dir = "preprocessing/dataset_preprocessed"
+    raw_path = "Eksperimen_SML_Kevinadiputra/dataset/heart_disease.csv"
+    out_dir = "Eksperimen_SML_Kevinadiputra/preprocessing/dataset_preprocessed"
     
     # Path fallbacks to handle running from root vs inside preprocessing/ folder
-    if not os.path.exists("dataset") and os.path.exists("../dataset"):
+    if not os.path.exists("Eksperimen_SML_Kevinadiputra/dataset") and os.path.exists("../dataset"):
         raw_path = "../dataset/heart_disease.csv"
         out_dir = "dataset_preprocessed"
         
