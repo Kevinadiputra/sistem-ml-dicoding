@@ -1,6 +1,5 @@
 """
-Script to generate a comprehensive experiment notebook for Kriteria 1 Dicoding submission.
-This follows the Template Eksperimen MSML format with proper EDA, visualizations, and analysis.
+Script to generate a comprehensive experiment notebook matching the Template Eksperimen MSML format.
 """
 import json
 import os
@@ -14,39 +13,13 @@ def make_code(source_lines):
 cells = []
 
 # ============================================================
-# TITLE & INTRODUCTION
+# 1. PERKENALAN DATASET
 # ============================================================
 cells.append(make_md([
-    "# Eksperimen Machine Learning: Klasifikasi Penyakit Jantung\n",
-    "\n",
-    "**Nama**: Kevin Adiputra  \n",
-    "**Dataset**: Heart Disease UCI  \n",
-    "**Tipe Masalah**: Klasifikasi Biner  \n",
-    "**Tanggal**: Juni 2026  \n",
-    "\n",
-    "---\n",
-    "\n",
-    "Notebook ini berisi dokumentasi proses eksperimen awal, analisis data eksploratif, dan pra-pemrosesan data untuk memenuhi syarat tugas akhir kelas Membangun Sistem Machine Learning.\n",
-    "\n",
-    "### Alur Eksperimen\n",
-    "1. **Pernyataan Masalah** - Pendefinisian tujuan analisis dan metrik evaluasi\n",
-    "2. **Memuat Data dan Tinjauan Awal** - Memuat data dan memeriksa ringkasan struktur dataset\n",
-    "3. **Eksplorasi Data (EDA)** - Analisis statistik deskriptif dan visualisasi sebaran data\n",
-    "4. **Pra-pemrosesan Data** - Pembersihan data duplikat dan pengisian nilai kosong\n",
-    "5. **Rekayasa Fitur** - Pembuatan fitur baru untuk menunjang performa model\n",
-    "6. **Pembagian dan Penskalaan Data** - Pembagian data latih/uji serta normalisasi fitur\n",
-    "7. **Penyimpanan Dataset** - Ekspor data hasil pemrosesan agar siap dipakai pada pemodelan\n",
-    "8. **Kesimpulan Eksperimen** - Ringkasan hasil temuan analisis data"
-]))
-
-# ============================================================
-# 1. PERNYATAAN MASALAH
-# ============================================================
-cells.append(make_md([
-    "## 1. Pernyataan Masalah\n",
+    "# **1. Perkenalan Dataset**\n",
     "\n",
     "### Latar Belakang\n",
-    "Penyakit jantung merupakan salah satu penyebab kematian tertinggi di dunia. Deteksi dini faktor risiko menjadi hal krusial untuk mencegah kefatalan. Melalui pemanfaatan data medis pasien, proyek ini bertujuan membangun model klasifikasi untuk memprediksi probabilitas seseorang mengidap penyakit jantung.\n",
+    "Penyakit jantung merupakan salah satu penyebab kematian tertinggi di dunia. Deteksi dini faktor risiko menjadi hal krusial untuk mencegah kefatalan. Melalui pemanfaatan data medis pasien, eksperimen ini bertujuan membangun model klasifikasi untuk memprediksi probabilitas seseorang mengidap penyakit jantung.\n",
     "\n",
     "### Tujuan Eksperimen\n",
     "1. Melakukan eksplorasi data untuk mengidentifikasi pola dan karakteristik pasien.\n",
@@ -68,10 +41,12 @@ cells.append(make_md([
 ]))
 
 # ============================================================
-# 2. DATA LOADING & OVERVIEW
+# 2. IMPORT LIBRARY
 # ============================================================
 cells.append(make_md([
-    "## 2. Memuat Data dan Tinjauan Awal"
+    "# **2. Import Library**\n",
+    "\n",
+    "Pustaka Python yang digunakan dalam analisis data dan visualisasi meliputi pandas, numpy, matplotlib, dan seaborn."
 ]))
 
 cells.append(make_code([
@@ -90,6 +65,15 @@ cells.append(make_code([
     "warnings.filterwarnings('ignore')\n",
     "\n",
     "print(\"Libraries berhasil dimuat.\")"
+]))
+
+# ============================================================
+# 3. MEMUAT DATASET
+# ============================================================
+cells.append(make_md([
+    "# **3. Memuat Dataset**\n",
+    "\n",
+    "Pemuatan dataset Heart Disease UCI untuk ditinjau dimensi, struktur data, tipe variabel, dan statistik deskriptif awal."
 ]))
 
 cells.append(make_code([
@@ -150,12 +134,12 @@ cells.append(make_code([
 ]))
 
 # ============================================================
-# 3. EXPLORATORY DATA ANALYSIS
+# 4. EXPLORATORY DATA ANALYSIS (EDA)
 # ============================================================
 cells.append(make_md([
-    "## 3. Eksplorasi Data (Exploratory Data Analysis)\n",
+    "# **4. Exploratory Data Analysis (EDA)**\n",
     "\n",
-    "Eksplorasi data dilakukan untuk menganalisis karakteristik data secara statistik dan visual, meliputi:\n",
+    "Analisis data eksploratif dilakukan untuk menganalisis karakteristik data secara statistik dan visual, meliputi:\n",
     "- Sebaran data dari setiap variabel\n",
     "- Keberadaan nilai kosong (missing values) dan data duplikat\n",
     "- Distribusi pencilan (outliers) pada variabel numerik\n",
@@ -163,9 +147,9 @@ cells.append(make_md([
     "- Hubungan antara variabel prediktor dengan variabel target"
 ]))
 
-# 3A. Missing Values
+# 4A. Missing Values
 cells.append(make_md([
-    "### 3.1 Analisis Nilai Kosong (Missing Values)"
+    "### 4.1 Analisis Nilai Kosong (Missing Values)"
 ]))
 
 cells.append(make_code([
@@ -206,9 +190,9 @@ cells.append(make_md([
     "- Karena persentase nilai kosong kecil, akan dilakukan imputasi menggunakan nilai median agar tidak dipengaruhi oleh nilai ekstrem."
 ]))
 
-# 3B. Duplicate Values
+# 4B. Duplicate Values
 cells.append(make_md([
-    "### 3.2 Analisis Data Duplikat"
+    "### 4.2 Analisis Data Duplikat"
 ]))
 
 cells.append(make_code([
@@ -228,9 +212,9 @@ cells.append(make_md([
     "- Baris duplikat ini akan dihapus pada tahap pra-pemrosesan untuk menghindari duplikasi informasi yang berulang."
 ]))
 
-# 3C. Outlier Analysis
+# 4C. Outlier Analysis
 cells.append(make_md([
-    "### 3.3 Analisis Pencilan (Outliers)"
+    "### 4.3 Analisis Pencilan (Outliers)"
 ]))
 
 cells.append(make_code([
@@ -273,9 +257,9 @@ cells.append(make_md([
     "- Pencilan tidak dihapus karena mewakili variasi data medis yang wajar dan relevan dengan klasifikasi penyakit jantung."
 ]))
 
-# 3D. Distribution Analysis
+# 4D. Distribution Analysis
 cells.append(make_md([
-    "### 3.4 Analisis Distribusi Variabel Numerik Kontinu"
+    "### 4.4 Analisis Distribusi Variabel Numerik Kontinu"
 ]))
 
 cells.append(make_code([
@@ -303,9 +287,9 @@ cells.append(make_code([
     "    print(f\"  {col:12s} | Skewness: {skew:6.3f} | {skew_type}\")"
 ]))
 
-# 3E. Categorical Analysis
+# 4E. Categorical Analysis
 cells.append(make_md([
-    "### 3.5 Analisis Distribusi Variabel Kategorikal"
+    "### 4.5 Analisis Distribusi Variabel Kategorikal"
 ]))
 
 cells.append(make_code([
@@ -333,9 +317,9 @@ cells.append(make_code([
     "plt.show()"
 ]))
 
-# 3F. Target Analysis
+# 4F. Target Analysis
 cells.append(make_md([
-    "### 3.6 Analisis Variabel Target"
+    "### 4.6 Analisis Variabel Target"
 ]))
 
 cells.append(make_code([
@@ -381,9 +365,9 @@ cells.append(make_md([
     "- Dengan rasio sekitar 0.87, kelas target tergolong seimbang sehingga tidak membutuhkan metode penyeimbangan data seperti SMOTE."
 ]))
 
-# 3G. Correlation Analysis
+# 4G. Correlation Analysis
 cells.append(make_md([
-    "### 3.7 Analisis Hubungan Korelasi"
+    "### 4.7 Analisis Hubungan Korelasi"
 ]))
 
 cells.append(make_code([
@@ -417,9 +401,9 @@ cells.append(make_md([
     "- Koefisien korelasi antar-fitur berada di bawah 0.8, mengindikasikan tidak adanya masalah multikolinearitas."
 ]))
 
-# 3H. Feature vs Target
+# 4H. Feature vs Target
 cells.append(make_md([
-    "### 3.8 Hubungan Antara Fitur dengan Target"
+    "### 4.8 Hubungan Antara Fitur dengan Target"
 ]))
 
 cells.append(make_code([
@@ -462,22 +446,23 @@ cells.append(make_code([
 ]))
 
 # ============================================================
-# 4. DATA PREPROCESSING
+# 5. DATA PREPROCESSING
 # ============================================================
 cells.append(make_md([
-    "## 4. Pra-pemrosesan Data (Data Preprocessing)\n",
+    "# **5. Data Preprocessing**\n",
     "\n",
-    "Langkah pra-pemrosesan data yang dilakukan meliputi:\n",
-    "1. Penghapusan 3 baris data duplikat.\n",
-    "2. Pengisian nilai kosong pada variabel `trestbps` dan `chol` menggunakan nilai median.\n",
-    "3. Rekayasa fitur untuk membuat informasi baru yang relevan dengan kondisi jantung.\n",
-    "4. Penerapan One-Hot Encoding pada variabel kategorikal non-biner.\n",
-    "5. Pembagian data latih (train) dan data uji (test) dengan perbandingan 80:20 secara terstrata.\n",
-    "6. Penskalaan standar (Standard Scaling) pada variabel numerik kontinu."
+    "Pra-pemrosesan data dilakukan untuk mempersiapkan dataset sebelum digunakan dalam pemodelan. Langkah-langkah yang dilakukan meliputi:\n",
+    "1. Penanganan data duplikat.\n",
+    "2. Penanganan nilai kosong.\n",
+    "3. Rekayasa fitur (Feature Engineering) untuk membuat variabel klinis baru.\n",
+    "4. Penerapan One-Hot Encoding pada fitur kategorikal.\n",
+    "5. Pembagian data latih dan uji secara terstrata.\n",
+    "6. Penskalaan standar (Standard Scaling) pada variabel numerik kontinu.\n",
+    "7. Penyimpanan dataset hasil pra-pemrosesan."
 ]))
 
 cells.append(make_md([
-    "### 4.1 Penanganan Data Duplikat"
+    "### 5.1 Penanganan Data Duplikat"
 ]))
 
 cells.append(make_code([
@@ -492,7 +477,7 @@ cells.append(make_code([
 ]))
 
 cells.append(make_md([
-    "### 4.2 Penanganan Nilai Kosong"
+    "### 5.2 Penanganan Nilai Kosong"
 ]))
 
 cells.append(make_code([
@@ -511,17 +496,8 @@ cells.append(make_code([
     "print(df_clean.isnull().sum().sum())"
 ]))
 
-# ============================================================
-# 5. FEATURE ENGINEERING
-# ============================================================
 cells.append(make_md([
-    "## 5. Rekayasa Fitur (Feature Engineering)\n",
-    "\n",
-    "Rekayasa fitur dilakukan untuk menambahkan variabel baru yang dapat membantu model mengenali pola penyakit jantung:\n",
-    "\n",
-    "1. `chol_bps_ratio`: Perbandingan kolesterol dengan tekanan darah untuk mengukur tingkat risiko kardiovaskular.\n",
-    "2. `age_group`: Pembagian usia ke dalam kategori usia muda (<=45), paruh baya (45-60), dan lansia (>60).\n",
-    "3. `hr_age_ratio`: Rasio detak jantung maksimum terhadap usia pasien."
+    "### 5.3 Rekayasa Fitur (Feature Engineering)"
 ]))
 
 cells.append(make_code([
@@ -547,11 +523,8 @@ cells.append(make_code([
     "df_feat.head()"
 ]))
 
-# ============================================================
-# 6. ENCODING, SPLITTING & SCALING
-# ============================================================
 cells.append(make_md([
-    "## 6. Encoding, Pembagian, dan Penskalaan Data"
+    "### 5.4 Pembagian Data, Encoding, dan Penskalaan"
 ]))
 
 cells.append(make_code([
@@ -614,11 +587,8 @@ cells.append(make_code([
     "    print(f\"  {col}: mean={X_train_scaled[col].mean():.4f}, std={X_train_scaled[col].std():.4f}\")"
 ]))
 
-# ============================================================
-# 7. SAVE DATASET
-# ============================================================
 cells.append(make_md([
-    "## 7. Penyimpanan Dataset Hasil Pra-pemrosesan"
+    "### 5.5 Penyimpanan Dataset Hasil Pra-pemrosesan"
 ]))
 
 cells.append(make_code([
@@ -640,18 +610,15 @@ cells.append(make_code([
     "    print(f\"   {i:2d}. {col}\")"
 ]))
 
-# ============================================================
-# 8. KESIMPULAN
-# ============================================================
 cells.append(make_md([
-    "## 8. Kesimpulan Eksperimen\n",
+    "### 5.6 Kesimpulan Eksperimen\n",
     "\n",
-    "### Ringkasan Dataset\n",
+    "#### Ringkasan Dataset\n",
     "- Jumlah data: 303 sampel dengan 14 variabel awal.\n",
     "- Variabel target: Diagnosa penyakit jantung (0 = Sehat, 1 = Penyakit Jantung).\n",
     "- Distribusi kelas: 46.5% normal vs 53.5% penyakit jantung (seimbang).\n",
     "\n",
-    "### Hasil Analisis dan Pra-pemrosesan\n",
+    "#### Hasil Analisis dan Pra-pemrosesan\n",
     "1. Nilai Kosong: Ditemukan nilai kosong pada variabel `trestbps` dan `chol` yang diselesaikan dengan imputasi median.\n",
     "2. Duplikasi: Sebanyak 3 baris data duplikat telah dihapus.\n",
     "3. Pencilan: Terdeteksi pencilan pada variabel `trestbps`, `chol`, dan `oldpeak` namun tetap dipertahankan karena mengandung nilai klinis riil.\n",
@@ -659,7 +626,7 @@ cells.append(make_md([
     "5. Penskalaan: Dilakukan Standard Scaling pada seluruh fitur numerik kontinu.\n",
     "6. Pembagian Data: Data dibagi menjadi 80% untuk data latih dan 20% untuk data uji secara terstrata.\n",
     "\n",
-    "### Output File\n",
+    "#### Output File\n",
     "- `dataset_preprocessed/train.csv` (data latih)\n",
     "- `dataset_preprocessed/test.csv` (data uji)\n",
     "\n",
