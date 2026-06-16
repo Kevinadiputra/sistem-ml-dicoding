@@ -90,11 +90,11 @@ Ini akan menghasilkan folder `dataset_preprocessed/` berisi `train.csv` & `test.
   ```
   Script akan mengirimkan payload ke API dan mengembalikan hasil prediksi class target (Normal / Heart Disease).
 * **Setup Prometheus & Grafana**:
-  Baca panduan lengkap konfigurasi dan alerting pada file [monitoring_setup_guide.md](file:///C:/Users/KevinAM/.gemini/antigravity-cli/brain/39fbd647-38b8-4165-93bf-c3c7d703a2b6/monitoring_setup_guide.md).
+  Baca panduan lengkap konfigurasi dan alerting pada file [monitoring_setup_guide.md](./monitoring_setup_guide.md).
 
 ---
 
 ## 📝 Panduan Penilaian Advanced & Reviewer Checklist
 
 Untuk memastikan berkas submission Anda mendapatkan nilai **Advanced (4/4)**, silakan buka file checklist dan panduan screenshot penyerahan berkas berikut:
-- [Checklist Nilai Advanced & Screenshot Guide](file:///C:/Users/KevinAM/.gemini/antigravity-cli/brain/39fbd647-38b8-4165-93bf-c3c7d703a2b6/dicoding_reviewer_checklist.md)
+- [Checklist Nilai Advanced & Screenshot Guide](./dicoding_reviewer_checklist.md)
