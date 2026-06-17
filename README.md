@@ -1,4 +1,4 @@
-# 🧪 Eksperimen Data & Preprocessing Pipeline - Heart Disease Classification
+# Eksperimen Data & Preprocessing Pipeline - Heart Disease Classification
 
 [![Automated Preprocessing Pipeline](https://github.com/Kevinadiputra/sistem-ml-dicoding/actions/workflows/preprocessing.yml/badge.svg)](https://github.com/Kevinadiputra/sistem-ml-dicoding/actions/workflows/preprocessing.yml)
 [![Python Version](https://img.shields.io/badge/python-3.10-blue.svg)](https://www.python.org/)
@@ -9,7 +9,7 @@ Repositori ini didedikasikan khusus untuk **Kriteria 1 (Eksperimen Data)** dalam
 
 ---
 
-## 📊 Dataset & Eksplorasi
+## Dataset & Eksplorasi
 
 Dataset utama yang digunakan adalah **Cleveland Heart Disease** dari UCI Machine Learning Repository. Dataset ini memuat 14 fitur klinis awal dari pasien untuk menentukan prediksi apakah pasien mengidap penyakit jantung atau tidak (fitur `target`).
 
@@ -23,7 +23,7 @@ Tahapan eksplorasi data secara mendalam didokumentasikan di dalam Jupyter Notebo
 
 ---
 
-## ⚙️ Preprocessing Pipeline
+## Preprocessing Pipeline
 
 Alur pra-pemrosesan data dibangun menggunakan Python untuk mengubah data klinis mentah menjadi format siap pakai yang dioptimalkan untuk pelatihan model machine learning. Langkah-langkah pipeline mencakup:
 
@@ -43,7 +43,7 @@ Alur pra-pemrosesan data dibangun menggunakan Python untuk mengubah data klinis 
 
 ---
 
-## 🚀 Otomatisasi Pipeline (GitOps)
+## Otomatisasi Pipeline (GitOps)
 
 Alur kerja preprocessing telah diotomatisasi secara penuh menggunakan **GitHub Actions** untuk mewujudkan prinsip GitOps yang andal.
 
@@ -61,7 +61,7 @@ Alur kerja preprocessing telah diotomatisasi secara penuh menggunakan **GitHub A
 
 ---
 
-## 📁 Struktur Repositori
+## Struktur Direktori
 
 Repositori ini diatur dengan rapi agar hanya melacak aset eksperimen data dan pra-pemrosesan:
 
@@ -89,7 +89,7 @@ sistem-ml-dicoding/
 
 ---
 
-## 🛠️ Cara Menjalankan secara Lokal
+## Cara Menjalankan secara Lokal
 
 1. **Klon Repositori**:
    ```bash
