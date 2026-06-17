@@ -34,21 +34,24 @@ Dataset yang digunakan dalam proyek ini adalah Cleveland Heart Disease dari UCI 
 ## Struktur Direktori
 
 ```text
-├── Eksperimen_SML_Kevinadiputra.txt        # Tautan ke repositori eksprimen & preprocessing
+├── Eksperimen_SML_Kevin_Adiputra.txt       # Tautan ke repositori eksprimen & preprocessing
 ├── Workflow-CI.txt                         # Tautan ke repositori CI/CD (Workflow-CI)
 ├── dataset/
 │   └── heart_disease.csv                  # Dataset mentah (Cleveland Heart Disease)
 ├── .github/
 │   └── workflows/
 │       └── preprocessing.yml              # Alur kerja otomatis pra-pemrosesan data
-├── Eksperimen_SML_Kevinadiputra/          # Folder eksperimen Kriteria 1
+├── Eksperimen_SML_Kevin_Adiputra/          # Folder eksperimen Kriteria 1
 │   ├── .workflow/                         # Validasi alur kerja Dicoding
-│   ├── dataset/
+│   ├── dataset_raw/
 │   │   └── heart_disease.csv              # Dataset mentah
 │   └── preprocessing/
-│       ├── Eksperimen_Kevinadiputra.ipynb # Dokumentasi analisis & pra-pemrosesan data
-│       ├── automate_Kevinadiputra.py      # Script otomatisasi pra-pemrosesan data
-│       └── dataset_preprocessed/          # Data hasil preprocessing terbagi train/test
+│       ├── Eksperimen_Kevin_Adiputra.ipynb # Dokumentasi analisis & pra-pemrosesan data
+│       ├── automate_Kevin_Adiputra.py      # Script otomatisasi pra-pemrosesan data
+│       ├── dataset_preprocessed/          # Data hasil preprocessing terbagi train/test
+│       │   ├── train.csv
+│       │   └── test.csv
+│       └── dataset_preprocessing/         # Salinan data hasil preprocessing terbagi train/test
 │           ├── train.csv
 │           └── test.csv
 ├── Membangun_model/                       # Folder pemodelan Kriteria 2
@@ -102,7 +105,7 @@ Jalankan script otomatisasi berikut untuk menghasilkan data hasil pra-pemrosesan
 ```bash
 python run_pipeline.py
 ```
-Script ini akan memproses dataset mentah dan menghasilkan file `train.csv` serta `test.csv` di direktori `dataset_preprocessed/`, sekaligus memperbarui salinan data di dalam folder `Workflow-CI/dataset/`.
+Script ini akan memproses dataset mentah dan menghasilkan file `train.csv` serta `test.csv` di direktori `dataset_preprocessed/` dan `dataset_preprocessing/`, sekaligus memperbarui salinan data di dalam folder `Workflow-CI/dataset/`.
 
 ### 3. Pemodelan dan Pelacakan
 - **Autologging Lokal**:
