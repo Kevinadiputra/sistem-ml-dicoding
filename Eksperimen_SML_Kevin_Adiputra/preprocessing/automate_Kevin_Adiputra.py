@@ -127,6 +127,7 @@ def main():
     train_preprocessed, test_preprocessed = preprocess(df_feat, target_col='target')
     save_dataset(train_preprocessed, test_preprocessed, out_dir)
     print("Preprocessing completed successfully!")
+    # Trigger workflow check
 
 if __name__ == "__main__":
     main()
