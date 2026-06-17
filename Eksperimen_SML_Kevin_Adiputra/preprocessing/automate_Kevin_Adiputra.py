@@ -4,7 +4,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
-def load_data(filepath="dataset/heart_disease.csv"):
+def load_data(filepath="dataset_raw/heart_disease.csv"):
     """Loads the raw dataset."""
     print(f"Loading data from {filepath}...")
     if not os.path.exists(filepath):
@@ -97,26 +97,28 @@ def preprocess(df, target_col='target'):
 
 def save_dataset(train_df, test_df, output_dir="dataset_preprocessed"):
     """Saves the preprocessed datasets to the target folder."""
-    print(f"Saving preprocessed datasets to '{output_dir}'...")
-    os.makedirs(output_dir, exist_ok=True)
-    
-    train_path = os.path.join(output_dir, "train.csv")
-    test_path = os.path.join(output_dir, "test.csv")
-    
-    train_df.to_csv(train_path, index=False)
-    test_df.to_csv(test_path, index=False)
-    
-    print(f"Preprocessed train set saved to {train_path} with shape {train_df.shape}")
-    print(f"Preprocessed test set saved to {test_path} with shape {test_df.shape}")
+    # Write to the requested folder
+    for folder in [output_dir, output_dir.replace("dataset_preprocessed", "dataset_preprocessing")]:
+        print(f"Saving preprocessed datasets to '{folder}'...")
+        os.makedirs(folder, exist_ok=True)
+        
+        train_path = os.path.join(folder, "train.csv")
+        test_path = os.path.join(folder, "test.csv")
+        
+        train_df.to_csv(train_path, index=False)
+        test_df.to_csv(test_path, index=False)
+        
+        print(f"Preprocessed train set saved to {train_path} with shape {train_df.shape}")
+        print(f"Preprocessed test set saved to {test_path} with shape {test_df.shape}")
 
 def main():
     """Main execution function."""
-    raw_path = "Eksperimen_SML_Kevinadiputra/dataset/heart_disease.csv"
-    out_dir = "Eksperimen_SML_Kevinadiputra/preprocessing/dataset_preprocessed"
+    raw_path = "Eksperimen_SML_Kevin_Adiputra/dataset_raw/heart_disease.csv"
+    out_dir = "Eksperimen_SML_Kevin_Adiputra/preprocessing/dataset_preprocessed"
     
     # Path fallbacks to handle running from root vs inside preprocessing/ folder
-    if not os.path.exists("Eksperimen_SML_Kevinadiputra/dataset") and os.path.exists("../dataset"):
-        raw_path = "../dataset/heart_disease.csv"
+    if not os.path.exists("Eksperimen_SML_Kevin_Adiputra/dataset_raw") and os.path.exists("../dataset_raw"):
+        raw_path = "../dataset_raw/heart_disease.csv"
         out_dir = "dataset_preprocessed"
         
     df = load_data(raw_path)

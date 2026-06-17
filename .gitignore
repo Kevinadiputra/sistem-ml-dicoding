@@ -1,36 +1,39 @@
-# Python
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
-.venv/
-venv/
-ENV/
 
-# Jupyter Notebook checkpoints
+# Cursors
 .ipynb_checkpoints
 */.ipynb_checkpoints/*
 
-# MLflow tracking local directories
+# Exclude all submission, modelling, monitoring, and development files from this repo
+Membangun_model/
+Membangun_Model/
+Monitoring dan Logging/
+Monitoring_dan_Logging/
+Workflow-CI/
+SMSML/
+Bukti_Screenshoot_lengkap/
+artifacts/
+model/
+prometheus/
 mlruns/
 mlruns.db
+mlflow.db
 
-# Exclude the second repository directory from the root git tracking
-Workflow-CI/
-
-# Personal study and development guides
-dicoding_reviewer_checklist.md
-monitoring_setup_guide.md
-catatan_reviewer.md
-
-# Development scripts
+# Exclude root development scripts and outputs
 create_dashboard.py
 create_notebook.py
 generate_data.py
 run_pipeline.py
-
-# Local databases and artifacts
-mlflow.db
-artifacts/
-
-# Local screenshots directory
-BUKTI SCREENSHOOT/
+inference.py
+prometheus_exporter.py
+grafana_dashboard.json
+catatan_reviewer.md
+dicoding_reviewer_checklist.md
+monitoring_setup_guide.md
+Eksperimen_SML_Kevin_Adiputra.txt
+Workflow-CI.txt
+Eksperimen_SML_Kevinadiputra.txt
+requirements.txt
