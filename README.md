@@ -1,144 +1,109 @@
-# Klasifikasi Penyakit Jantung Menggunakan Sistem Machine Learning End-to-End
+# 🧪 Eksperimen Data & Preprocessing Pipeline - Heart Disease Classification
 
-Repository ini berisi implementasi sistem klasifikasi penyakit jantung berbasis machine learning secara end-to-end. Proyek ini mencakup seluruh siklus pengembangan mulai dari pra-pemrosesan data, pelacakan eksperimen pemodelan, integrasi sirkuit integrasi berkelanjutan (CI/CD), hingga penyajian model (serving) dan pemantauan (monitoring).
+[![Automated Preprocessing Pipeline](https://github.com/Kevinadiputra/sistem-ml-dicoding/actions/workflows/preprocessing.yml/badge.svg)](https://github.com/Kevinadiputra/sistem-ml-dicoding/actions/workflows/preprocessing.yml)
+[![Python Version](https://img.shields.io/badge/python-3.10-blue.svg)](https://www.python.org/)
+[![Scikit-Learn](https://img.shields.io/badge/scikit--learn-1.0+-orange.svg)](https://scikit-learn.org/)
+[![MLOps Dicoding](https://img.shields.io/badge/MLOps-Dicoding-green.svg)](https://www.dicoding.com/)
 
-## Dataset
-Dataset yang digunakan dalam proyek ini adalah Cleveland Heart Disease dari UCI Machine Learning Repository yang berisi informasi klinis pasien seperti usia, jenis kelamin, tipe nyeri dada, tekanan darah, kadar kolesterol, dan detak jantung maksimum.
+Repositori ini didedikasikan khusus untuk **Kriteria 1 (Eksperimen Data)** dalam proyek tugas akhir Dicoding: **Membangun Sistem Machine Learning (MSML)**. Repositori ini fokus sepenuhnya pada eksplorasi dataset klinis penyakit jantung (Cleveland Heart Disease), analisis statistik, rekayasa fitur, pra-pemrosesan data terstandarisasi, serta otomatisasi alur kerja preprocessing melalui GitHub Actions.
 
-## Alur Pengerjaan
+---
 
-1. **Pra-pemrosesan Data (Kriteria 1)**
-   - Menghapus baris data duplikat.
-   - Mengisi nilai kosong pada variabel `trestbps` dan `chol` dengan nilai median.
-   - Rekayasa fitur: membuat variabel baru `chol_bps_ratio`, `age_group`, dan `hr_age_ratio`.
-   - Melakukan One-Hot Encoding pada fitur kategorikal non-biner.
-   - Membagi dataset menjadi data latih (80%) dan data uji (20%) secara terstrata.
-   - Penskalaan standar menggunakan StandardScaler pada variabel kontinu.
+## 📊 Dataset & Eksplorasi
 
-2. **Pemodelan & Pelacakan Eksperimen (Kriteria 2)**
-   - Melatih model klasifikasi menggunakan Random Forest Classifier.
-   - Melakukan pelacakan otomatis (autologging) parameter dan metrik evaluasi model dengan MLflow secara lokal.
-   - Melakukan penalaan hyperparameter (hyperparameter tuning) dengan GridSearchCV dan merekam parameter terbaik, metrik evaluasi (Accuracy, Precision, Recall, F1-Score), serta artefak visualisasi ke registri MLflow di DagsHub secara manual.
+Dataset utama yang digunakan adalah **Cleveland Heart Disease** dari UCI Machine Learning Repository. Dataset ini memuat 14 fitur klinis awal dari pasien untuk menentukan prediksi apakah pasien mengidap penyakit jantung atau tidak (fitur `target`).
 
-3. **Workflow CI (Kriteria 3)**
-   - Mengintegrasikan kode pemodelan ke dalam folder terpisah sebagai proyek MLflow (`Workflow-CI`).
-   - Menyusun alur integrasi berkelanjutan (GitHub Actions) untuk memicu proses training secara otomatis, menguji performa model, dan membangun serta mengunggah Docker image berisi model serving ke Docker Hub.
+Tahapan eksplorasi data secara mendalam didokumentasikan di dalam Jupyter Notebook:
+* **Lokasi Notebook**: [`Eksperimen_SML_Kevin_Adiputra/preprocessing/Eksperimen_Kevin_Adiputra.ipynb`](file:///Eksperimen_SML_Kevin_Adiputra/preprocessing/Eksperimen_Kevin_Adiputra.ipynb)
+* **Cakupan Analisis**:
+  * Pemuatan data klinis awal.
+  * Analisis statistik deskriptif dan deteksi nilai kosong (*missing values*), duplikasi baris, serta pencilan (*outliers*).
+  * Visualisasi sebaran data fitur kontinu (seperti usia, tekanan darah, kolesterol) dan distribusi variabel kelas target.
+  * Analisis matriks korelasi fitur kontinu untuk melihat hubungan antar variabel klinis.
 
-4. **Serving & Pemantauan (Kriteria 4)**
-   - Membuka model serving menggunakan FastAPI dengan endpoint `/predict`.
-   - Mengintegrasikan Prometheus Client untuk mengekspor metrik sistem dan performa model lewat endpoint `/metrics`.
-   - Menghubungkan Prometheus server untuk mengambil metrik dari aplikasi FastAPI.
-   - Menyusun dashboard visualisasi di Grafana untuk memantau metrik secara real-time.
-   - Menyiapkan aturan peringatan (alert rules) pada Grafana jika terjadi lonjakan latensi, tingginya beban CPU, atau tingginya tingkat error pada server.
+---
 
-## Struktur Direktori
+## ⚙️ Preprocessing Pipeline
+
+Alur pra-pemrosesan data dibangun menggunakan Python untuk mengubah data klinis mentah menjadi format siap pakai yang dioptimalkan untuk pelatihan model machine learning. Langkah-langkah pipeline mencakup:
+
+1. **Pembersihan Data (Cleaning)**:
+   * Menghapus baris data duplikat secara otomatis untuk menjaga integritas eksperimen.
+   * Mendeteksi dan mengisi nilai kosong (*missing values*) pada fitur `trestbps` (tekanan darah istirahat) dan `chol` (kolesterol) menggunakan nilai **median** dari data latih untuk menghindari bias.
+2. **Rekayasa Fitur (Feature Engineering)**:
+   * **`chol_bps_ratio`**: Rasio kolesterol terhadap tekanan darah pasien.
+   * **`age_group`**: Pengelompokan umur pasien ke dalam 3 kategori utama (Muda: `<45` tahun, Paruh Baya: `45-60` tahun, Lansia: `>60` tahun).
+   * **`hr_age_ratio`**: Rasio detak jantung maksimum terhadap usia pasien.
+3. **Encoding Variabel Kategorikal**:
+   * Melakukan *One-Hot Encoding* (OHE) pada seluruh variabel kategorikal non-biner (`cp` - tipe nyeri dada, `restecg` - hasil EKG, `slope` - kemiringan segmen ST, `thal` - thalasemia, dan fitur baru `age_group`) dengan opsi `drop_first=True` untuk menghindari jebakan multikolinearitas.
+4. **Pembagian Dataset (Train-Test Split)**:
+   * Membagi dataset menjadi data latih (**80%**) dan data uji (**20%**) dengan metode *Stratified Split* untuk memastikan proporsi kelas target tetap seimbang di kedua set.
+5. **Penskalaan Standar (Scaling)**:
+   * Menerapkan penskalaan standar (`StandardScaler`) pada seluruh fitur kontinu untuk menstandarisasikan rata-rata = 0 dan varians = 1. Parameter penskalaan hanya dipelajari (*fit*) pada data latih dan diterapkan (*transform*) pada data uji untuk mencegah kebocoran data (*data leakage*).
+
+---
+
+## 🚀 Otomatisasi Pipeline (GitOps)
+
+Alur kerja preprocessing telah diotomatisasi secara penuh menggunakan **GitHub Actions** untuk mewujudkan prinsip GitOps yang andal.
+
+### File Konfigurasi Alur Kerja (Workflow CI)
+* **Lokasi Konfigurasi**: [`.github/workflows/preprocessing.yml`](file:///.github/workflows/preprocessing.yml)
+* **Aturan Trigger**: Pemicuan alur kerja otomatis terjadi setiap kali terdapat push perubahan pada:
+  * File dataset mentah (`Eksperimen_SML_Kevin_Adiputra/dataset_raw/heart_disease.csv`)
+  * Script otomatisasi (`Eksperimen_SML_Kevin_Adiputra/preprocessing/automate_Kevin_Adiputra.py`)
+* **Langkah Eksekusi Workflow**:
+  1. Melakukan checkout repositori.
+  2. Menyiapkan runtime environment Python 3.10.
+  3. Menginstal pustaka dependensi (pandas, numpy, scikit-learn).
+  4. Mengeksekusi script otomatisasi `automate_Kevin_Adiputra.py` untuk memproses ulang data mentah.
+  5. Melakukan verifikasi dan commit perubahan hasil preprocessing (`train.csv` dan `test.csv`) kembali ke repositori GitHub secara otomatis menggunakan bot GitHub Actions.
+
+---
+
+## 📁 Struktur Repositori
+
+Repositori ini diatur dengan rapi agar hanya melacak aset eksperimen data dan pra-pemrosesan:
 
 ```text
-├── Eksperimen_SML_Kevin_Adiputra.txt       # Tautan ke repositori eksprimen & preprocessing
-├── Workflow-CI.txt                         # Tautan ke repositori CI/CD (Workflow-CI)
-├── dataset/
-│   └── heart_disease.csv                  # Dataset mentah (Cleveland Heart Disease)
+sistem-ml-dicoding/
 ├── .github/
 │   └── workflows/
-│       └── preprocessing.yml              # Alur kerja otomatis pra-pemrosesan data
-├── Eksperimen_SML_Kevin_Adiputra/          # Folder eksperimen Kriteria 1
-│   ├── .workflow/                         # Validasi alur kerja Dicoding
+│       └── preprocessing.yml              # Alur otomatisasi pipeline preprocessing (GitHub Actions)
+├── .gitignore                             # Konfigurasi pengabaian berkas non-eksperimen
+├── Eksperimen_SML_Kevin_Adiputra/         # Direktori utama eksperimen
+│   ├── .workflow/                         # Duplikasi file konfigurasi workflow
 │   ├── dataset_raw/
-│   │   └── heart_disease.csv              # Dataset mentah
+│   │   └── heart_disease.csv              # Dataset klinis penyakit jantung awal (mentah)
 │   └── preprocessing/
-│       ├── Eksperimen_Kevin_Adiputra.ipynb # Dokumentasi analisis & pra-pemrosesan data
-│       ├── automate_Kevin_Adiputra.py      # Script otomatisasi pra-pemrosesan data
-│       ├── dataset_preprocessed/          # Data hasil preprocessing terbagi train/test
+│       ├── Eksperimen_Kevin_Adiputra.ipynb # Analisis data eksploratif (EDA) & preprocessing notebook
+│       ├── automate_Kevin_Adiputra.py      # Script Python otomatisasi preprocessing pipeline
+│       ├── dataset_preprocessed/          # Output dataset latih/uji (Format checklist utama)
 │       │   ├── train.csv
 │       │   └── test.csv
-│       └── dataset_preprocessing/         # Salinan data hasil preprocessing terbagi train/test
+│       └── dataset_preprocessing/         # Output dataset latih/uji (Format spesifik reviewer)
 │           ├── train.csv
 │           └── test.csv
-├── Membangun_model/                       # Folder pemodelan Kriteria 2
-│   ├── dataset_preprocessed/              # Salinan data pra-pemrosesan untuk pemodelan
-│   │   ├── train.csv
-│   │   └── test.csv
-│   ├── modelling.py                       # Script pelatihan model dengan autologging
-│   ├── modelling_tuning.py                # Script hyperparameter tuning dengan remote registry
-│   ├── screenshoot_dashboard.jpg          # Bukti screenshot local MLflow dashboard
-│   ├── screenshoot_artifak.jpg            # Bukti screenshot remote DagsHub experiments
-│   ├── requirements.txt                   # Dependensi pemodelan
-│   └── DagsHub.txt                        # Tautan registri remote DagsHub MLflow
-├── Workflow-CI/                           # Repositori terpisah untuk pipeline CI (Kriteria 3)
-│   ├── .github/workflows/
-│   │   └── ci-training.yml                # Alur kerja CI training dan build/push Docker
-│   ├── dataset/
-│   │   └── heart_disease_preprocessed.csv # Salinan data pra-pemrosesan untuk CI
-│   ├── MLproject                          # Spesifikasi proyek MLflow
-│   ├── conda.yaml                         # Spesifikasi environment conda
-│   ├── modelling.py                       # Script pelatihan model untuk proyek MLflow
-│   ├── Dockerfile                         # Spesifikasi kontainer Docker untuk deployment
-│   ├── requirements.txt                   # Dependensi instalasi kontainer
-│   └── prometheus_exporter.py             # Script model serving dengan metrics exporter
-├── Monitoring dan Logging/                 # Folder monitoring Kriteria 4
-│   ├── 1.bukti_serving.png                # Screenshot model serving berjalan
-│   ├── 2.prometheus.yml                   # Konfigurasi pengumpulan metrik Prometheus
-│   ├── 3.prometheus_exporter.py           # Script model serving FastAPI & exporter
-│   ├── 4.bukti monitoring Prometheus/     # Folder screenshot targets & query metrik
-│   ├── 5.bukti monitoring Grafana/        # Folder screenshot dashboard Grafana
-│   ├── 6.bukti alerting Grafana/          # Folder screenshot notifikasi alert firing
-│   └── 7.Inference.py                     # Script simulasi pengujian client
-├── prometheus/
-│   └── prometheus.yml                     # Konfigurasi pengumpulan metrik Prometheus
-├── requirements.txt                       # Daftar dependensi utama proyek
-├── inference.py                           # Script simulasi pengujian root client
-├── prometheus_exporter.py                 # Script model serving lokal FastAPI & Prometheus
-├── grafana_dashboard.json                 # Konfigurasi dashboard visualisasi Grafana
-└── README.md                              # Dokumentasi proyek
+└── README.md                              # Dokumentasi repositori ini
 ```
 
-## Cara Menjalankan Proyek secara Lokal
+---
 
-### 1. Instalasi Dependensi
-Pastikan Python 3.10 ke atas telah terinstal. Instal seluruh pustaka dependensi yang dibutuhkan:
-```bash
-pip install -r requirements.txt
-```
+## 🛠️ Cara Menjalankan secara Lokal
 
-### 2. Pra-pemrosesan Data
-Jalankan script otomatisasi berikut untuk menghasilkan data hasil pra-pemrosesan:
-```bash
-python run_pipeline.py
-```
-Script ini akan memproses dataset mentah dan menghasilkan file `train.csv` serta `test.csv` di direktori `dataset_preprocessed/` dan `dataset_preprocessing/`, sekaligus memperbarui salinan data di dalam folder `Workflow-CI/dataset/`.
-
-### 3. Pemodelan dan Pelacakan
-- **Autologging Lokal**:
-  ```bash
-  python Membangun_model/modelling.py
-  ```
-  Visualisasikan hasil eksperimen pemodelan lokal melalui dashboard MLflow:
-  ```bash
-  mlflow ui
-  ```
-- **Hyperparameter Tuning (DagsHub)**:
-  Atur kredensial akun DagsHub terlebih dahulu menggunakan environment variables:
-  ```bash
-  $env:DAGSHUB_USERNAME="Username_DagsHub"
-  $env:DAGSHUB_REPO="Nama_Repository"
-  ```
-  Kemudian jalankan proses penalaan parameter:
-  ```bash
-  python Membangun_model/modelling_tuning.py
-  ```
-  Metrik evaluasi beserta grafik visualisasi (Confusion Matrix, Feature Importance, Learning Curve) akan diunggah ke server registri MLflow DagsHub.
-
-### 4. Serving dan Pemantauan
-- **Menjalankan Server Serving**:
-  ```bash
-  uvicorn prometheus_exporter:app --host 127.0.0.1 --port 8000
-  ```
-- **Melakukan Uji Coba Prediksi**:
-  Jalankan script berikut di terminal terpisah untuk mensimulasikan permintaan prediksi ke API server:
-  ```bash
-  python inference.py
-  # Atau menggunakan script client monitoring:
-  python "Monitoring dan Logging/7.Inference.py"
-  ```
-- **Mengaktifkan Prometheus dan Grafana**:
-  Jalankan server Prometheus lokal menggunakan berkas konfigurasi di `prometheus/prometheus.yml`, kemudian jalankan Grafana dan impor berkas konfigurasi dashboard `grafana_dashboard.json` untuk visualisasi metrik secara real-time.
+1. **Klon Repositori**:
+   ```bash
+   git clone https://github.com/Kevinadiputra/sistem-ml-dicoding.git
+   cd sistem-ml-dicoding
+   ```
+2. **Instal Dependensi**:
+   Pastikan Anda menggunakan Python 3.10+. Jalankan perintah instalasi berikut:
+   ```bash
+   pip install pandas numpy scikit-learn jupyter
+   ```
+3. **Jalankan Pipeline Preprocessing**:
+   Eksekusi script otomatisasi secara langsung dari root direktori proyek:
+   ```bash
+   python Eksperimen_SML_Kevin_Adiputra/preprocessing/automate_Kevin_Adiputra.py
+   ```
+   *Script ini akan memproses dataset mentah dan menghasilkan berkas data klinis terstandardisasi `train.csv` dan `test.csv` di dalam folder output.*
